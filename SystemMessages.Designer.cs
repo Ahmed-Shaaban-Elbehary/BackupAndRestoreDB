@@ -70,11 +70,29 @@ namespace BackupAndRestoreDB {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to خطـــأ غير معــروف.
+        /// </summary>
+        internal static string errorFaildOperations {
+            get {
+                return ResourceManager.GetString("errorFaildOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to من فضلك قم بإدخال إسم السيرفر.
         /// </summary>
         internal static string errorServerNameIsEmpty {
             get {
                 return ResourceManager.GetString("errorServerNameIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تمت العملية بنجــاح.
+        /// </summary>
+        internal static string SuccessBackUpDatabase {
+            get {
+                return ResourceManager.GetString("SuccessBackUpDatabase", resourceCulture);
             }
         }
     }

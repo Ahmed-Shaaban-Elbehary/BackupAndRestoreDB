@@ -53,16 +53,59 @@ namespace BackupAndRestoreDB
         }
         public void BackupDatabase(SqlConnectionStringBuilder csb, string destinationPath)
         {
-            ServerConnection connection = new ServerConnection(csb.DataSource, csb.UserID, csb.Password);
-            Server sqlServer = new Server(connection);
+            ServerConnection connection = null;
             Backup bkpDatabase = new Backup();
-            bkpDatabase.Action = BackupActionType.Database;
-            bkpDatabase.Database = csb.InitialCatalog;
-            BackupDeviceItem bkpDevice = new BackupDeviceItem(destinationPath, DeviceType.File);
-            bkpDatabase.Devices.Add(bkpDevice);
-            bkpDatabase.SqlBackup(sqlServer);
-            connection.Disconnect();
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (csb.UserID != "" && csb.Password != "")
+            {
+                try
+                {
+                    connection = new ServerConnection(csb.DataSource, csb.UserID, csb.Password);
+                    Server sqlServer = new Server(connection);
+                    bkpDatabase.Action = BackupActionType.Database;
+                    bkpDatabase.Database = csb.InitialCatalog;
+                    sfd.Filter = "BackUp File|*" + csb.InitialCatalog + ".BAK";
+                    sfd.FileName = "BackUp_" + csb.InitialCatalog + "_" + (DateTime.Now.ToString("ddMMyyyyHHmmss"));
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        BackupDeviceItem bkpDevice = new BackupDeviceItem(sfd.FileName, DeviceType.File);
+                        bkpDatabase.Devices.Add(bkpDevice);
+                        bkpDatabase.SqlBackup(sqlServer);
 
+                        MessageBox.Show(SystemMessages.SuccessBackUpDatabase, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    connection.Disconnect();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+            }
+            else
+            {
+
+                try
+                {
+                    connection = new ServerConnection(csb.DataSource);
+                    Server sqlServer = new Server(connection);
+                    bkpDatabase.Action = BackupActionType.Database;
+                    bkpDatabase.Database = csb.InitialCatalog;
+                    sfd.Filter = "BackUp File|*" + csb.InitialCatalog + ".BAK";
+                    sfd.FileName = "BackUp_" + csb.InitialCatalog + "_" + (DateTime.Now.ToString("ddMMyyyyHHmmss"));
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        BackupDeviceItem bkpDevice = new BackupDeviceItem(sfd.FileName, DeviceType.File);
+                        bkpDatabase.Devices.Add(bkpDevice);
+                        bkpDatabase.SqlBackup(sqlServer);
+                        MessageBox.Show(SystemMessages.SuccessBackUpDatabase, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    connection.Disconnect();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(SystemMessages.errorFaildOperations, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
         public List<string> GetDatabasesName()
         {

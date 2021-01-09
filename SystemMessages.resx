@@ -120,7 +120,13 @@
   <data name="errorDatabaseNameIsEmpty" xml:space="preserve">
     <value>من فضلك قم بإدخال إسم قاعدة البيانات</value>
   </data>
+  <data name="errorFaildOperations" xml:space="preserve">
+    <value>خطـــأ غير معــروف</value>
+  </data>
   <data name="errorServerNameIsEmpty" xml:space="preserve">
     <value>من فضلك قم بإدخال إسم السيرفر</value>
+  </data>
+  <data name="SuccessBackUpDatabase" xml:space="preserve">
+    <value>تمت العملية بنجــاح</value>
   </data>
 </root>
