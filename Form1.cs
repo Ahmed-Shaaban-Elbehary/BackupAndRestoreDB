@@ -64,26 +64,24 @@ namespace BackupAndRestoreDB
                     Server sqlServer = new Server(connection);
                     bkpDatabase.Action = BackupActionType.Database;
                     bkpDatabase.Database = csb.InitialCatalog;
-                    sfd.Filter = "BackUp File|*" + csb.InitialCatalog + ".BAK";
+                    sfd.Filter = "BackUp File|*.BAK";
                     sfd.FileName = "BackUp_" + csb.InitialCatalog + "_" + (DateTime.Now.ToString("ddMMyyyyHHmmss"));
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         BackupDeviceItem bkpDevice = new BackupDeviceItem(sfd.FileName, DeviceType.File);
                         bkpDatabase.Devices.Add(bkpDevice);
-                        bkpDatabase.SqlBackup(sqlServer);
-
+                        bkpDatabase.SqlBackupAsync(sqlServer);
                         MessageBox.Show(SystemMessages.SuccessBackUpDatabase, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     connection.Disconnect();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    MessageBox.Show(e.ToString());
+                    MessageBox.Show(SystemMessages.errorFaildOperations, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
             {
-
                 try
                 {
                     connection = new ServerConnection(csb.DataSource);
@@ -96,7 +94,7 @@ namespace BackupAndRestoreDB
                     {
                         BackupDeviceItem bkpDevice = new BackupDeviceItem(sfd.FileName, DeviceType.File);
                         bkpDatabase.Devices.Add(bkpDevice);
-                        bkpDatabase.SqlBackup(sqlServer);
+                        bkpDatabase.SqlBackupAsync(sqlServer);
                         MessageBox.Show(SystemMessages.SuccessBackUpDatabase, "سيرفر", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     connection.Disconnect();
